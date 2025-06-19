@@ -99,12 +99,11 @@ Microsoft Teams & Security Professional
 
 ---
 
-## 📸 Example Output
+🧠 Still Exploring
+Deeper CI/CD best practices (manual vs. automated triggers)
+How this connects with Desired State Configuration (DSC)
+Limitations of configuring Teams policies via Intune (many are user-based, not device-based)
 
-```powershell
-✅ Connected to Microsoft Graph
-✅ Found group 'SNS Active Users' with ID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-🚀 Creating Intune configuration profile...
-✅ Created profile: Teams DSCP Marking Profile (ID: xxxxxxxx)
-🔁 Assigning profile to group 'SNS Active Users'...
-🎉 DSCP policy deployment completed successfully!
+🤝 Let’s Connect
+Want to learn or build together?
+Feel free to connect with me on LinkedIn or contribute ideas.

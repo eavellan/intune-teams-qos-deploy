@@ -106,4 +106,4 @@ Limitations of configuring Teams policies via Intune (many are user-based, not d
 
 🤝 Let’s Connect
 Want to learn or build together?
-Feel free to connect with me on LinkedIn (https://www.linkedin.com/in/edgaravellan) or contribute ideas.
+Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/edgaravellan)

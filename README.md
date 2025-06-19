@@ -1,71 +1,110 @@
-# 🚀 Intune DSCP QoS Automation for Microsoft Teams (Demo Version)
+# 🏁 Microsoft Teams DSCP QoS Deployment via Intune
 
-This project automates the deployment of Microsoft Teams DSCP (Quality of Service) policies via **Microsoft Intune** and **Microsoft Graph** — specifically for **Windows 10/11 Enterprise** environments.
+This repo automates the deployment of Microsoft Teams **Quality of Service (QoS)** policies for both:
 
-✅ No manual Intune portal setup  
-✅ Fully automated with PowerShell + Microsoft Graph  
-✅ Designed for infrastructure-as-code and CI/CD integration
-
----
-
-## 🎯 Problem Solved
-
-Microsoft Teams requires DSCP tagging for optimal call quality. Intune supports DSCP tagging via OMA-URI — but:
-- It's **complex to configure manually**
-- It’s **not supported** on Windows 10/11 **Business or Pro**
-
-This repo automates policy creation for **Enterprise** devices using Microsoft Graph, and is structured to support CI/CD workflows (like GitHub Actions or Azure DevOps).
+- **Windows 10/11 Enterprise or Education** via Intune Custom Profiles (OMA-URI + Graph API)
+- **Windows 10/11 Business** via native PowerShell and Intune Script deployment
 
 ---
 
-## 📦 What’s Inside
+## 🔁 Deployment Matrix
 
-| File | Purpose |
-|------|---------|
-| `scripts/enterprise/create-intune-profile.ps1` | Deploys DSCP OMA-URI profile to Intune |
-| `README.md` | Documentation (this file) |
-
-> ⚠️ All sensitive credentials are redacted. Secrets are stored as environment variables in your pipeline.
+| Edition                  | Method                             | Location                                |
+|--------------------------|------------------------------------|-----------------------------------------|
+| Windows 10/11 Enterprise | OMA-URI via Microsoft Graph        | `scripts/enterprise/create-intune-profile.ps1` |
+| Windows 10/11 Business   | PowerShell script via Intune       | `scripts/business/Set-TeamsQoS.ps1`           |
 
 ---
 
-## 🔧 What the Script Does
+## 💡 Why Two Paths?
 
-- Connects to Microsoft Graph via App Registration
-- Deletes existing DSCP profiles by name (to avoid duplicates)
-- Re-creates the profile with updated OMA-URI QoS values:
-  - **Audio**: DSCP 46
-  - **Video**: DSCP 34
-  - **Screenshare**: DSCP 18
-  - **Signaling**: DSCP 40
-- Assigns the profile to an Azure AD group
+Microsoft Intune only supports OMA-URI DSCP policies on **Enterprise** or **Education** editions. For **Business**, the DSCP settings must be applied locally via PowerShell.
+
+This repo automates both approaches and demonstrates Infrastructure-as-Code for endpoint configuration.
 
 ---
 
-## 📂 Repo Setup
+## ✅ What’s Included
 
-1. Clone this repo  
-2. Store your secrets in GitHub Actions or your CI pipeline:
+### 1. `create-intune-profile.ps1`
+- Uses Microsoft Graph API and app-only auth
+- Creates a custom Intune configuration profile
+- Populates DSCP tags via OMA-URI for:
+  - Audio (DSCP 46)
+  - Video (DSCP 34)
+  - Screensharing (DSCP 18)
+  - Signaling (DSCP 40)
+- Assigns to the group `SNS Active Users`
+- CI/CD ready with GitHub Actions support
+
+### 2. `Set-TeamsQoS.ps1`
+- Uses PowerShell’s `New-NetQosPolicy`
+- Targets `Teams.exe` with DSCP tags
+- Can be uploaded via **Intune > Devices > Scripts**
+- Filters devices to **Business** editions dynamically
+
+---
+
+## 🚀 How to Use
+
+### For Enterprise
+
+1. Add GitHub secrets:
    - `TENANT_ID`
    - `CLIENT_ID`
    - `CLIENT_SECRET`
-3. Run the script manually or trigger it via GitHub Actions
+2. Run the GitHub Action: `deploy-enterprise-profile.yml`
+3. Done — Intune policy will be created and assigned.
+
+> ⚠️ The OMA-URI policy only works on Enterprise/Education editions.
 
 ---
 
-## 💡 Designed By
+### For Business
+
+1. Upload `Set-TeamsQoS.ps1` in Intune:
+   - Go to: `Devices > Scripts > Add`
+2. Assign to your Windows 10/11 Business group
+3. Monitor script results under `Devices > Script Status`
+
+---
+
+## 🔒 API Permissions Required
+
+To use Microsoft Graph (for Enterprise script), ensure your Azure App Registration has:
+
+- `DeviceManagementConfiguration.ReadWrite.All`
+- `Group.Read.All`
+
+With admin consent.
+
+---
+
+## 🌱 Why This Matters
+
+This repo is designed to:
+
+- Replace manual DSCP tagging with automation
+- Extend Teams QoS configuration to all Windows editions
+- Showcase DevOps and Intune skills using GitHub, Graph, and PowerShell
+- Help IT admins bridge the gap between **security**, **networking**, and **device management**
+
+---
+
+## 🙋‍♂️ Author
 
 **Edgar Avellan**  
-Microsoft Teams & Security Administrator  
-*GitHub Actions | Intune | Microsoft Graph | PowerShell*  
+Microsoft Teams & Security Professional  
+*GitHub | Microsoft Graph | Intune | PowerShell | Defender | CI/CD Learner*
 
 ---
 
-## 🌐 References
+## 📸 Example Output
 
-- [Microsoft Teams QoS via OMA-URI](https://learn.microsoft.com/en-us/microsoftteams/qos-in-teams)
-- [Microsoft Graph API for Intune](https://learn.microsoft.com/en-us/graph/api/resources/intune-graph-overview)
-
----
-
-> 🔒 Want the full version with dynamic OS filtering, PowerShell script deployment for Windows Business, and GitHub CI/CD integration? [Connect with me directly](https://www.linkedin.com/in/edgaravellan) to discuss access.
+```powershell
+✅ Connected to Microsoft Graph
+✅ Found group 'SNS Active Users' with ID: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+🚀 Creating Intune configuration profile...
+✅ Created profile: Teams DSCP Marking Profile (ID: xxxxxxxx)
+🔁 Assigning profile to group 'SNS Active Users'...
+🎉 DSCP policy deployment completed successfully!

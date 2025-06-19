@@ -13,21 +13,12 @@ This script provides a **workaround for Business editions**, applying local QoS 
 ---
 
 ## 📄 Script File
-
-```bash
 Set-TeamsQoS.ps1
-Path:
+Path: scripts/business/Set-TeamsQoS.ps1
 
-bash
-Copy
-Edit
-scripts/business/Set-TeamsQoS.ps1
 🎯 What It Configures
 Applies DSCP values to Microsoft Teams media workloads using the standard executable path:
 
-java
-Copy
-Edit
 C:\Program Files (x86)\Microsoft\Teams\current\Teams.exe
 Media Type	DSCP Value	Source Port Range
 Audio	46	50000–50019

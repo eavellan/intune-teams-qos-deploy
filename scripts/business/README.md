@@ -77,7 +77,7 @@ Microsoft Teams & Endpoint Automation | Intune | Microsoft Graph | GitHub Action
 
 ---
 
-> 🛠 This script is part of a larger automation suite that also supports Windows Enterprise deployments via Microsoft Graph API and OMA-URI profiles. View the full project [here](https://github.com/YOUR_USERNAME/intune-teams-qos-deploy).
+> 🛠 This script is part of a larger automation suite that also supports Windows Enterprise deployments via Microsoft Graph API and OMA-URI profiles. View the full project [here](https://github.com/eavellan/intune-teams-qos-deploy).
 
 
 

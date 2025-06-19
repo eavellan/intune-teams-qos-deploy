@@ -1,0 +1,28 @@
+name: Deploy DSCP QoS (Enterprise Edition)
+
+on:
+  workflow_dispatch:  # Allows manual runs from the GitHub Actions UI
+
+jobs:
+  deploy-qos-policy:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Microsoft Graph PowerShell SDK
+        run: |
+          Install-Module Microsoft.Graph -Force -Scope CurrentUser
+
+      - name: Run DSCP Enterprise Intune Profile Script
+        shell: pwsh
+        env:
+          TENANT_ID: ${{ secrets.TENANT_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        run: |
+          .\scripts\enterprise\create-intune-profile.ps1 `
+            -TenantId $env:TENANT_ID `
+            -ClientId $env:CLIENT_ID `
+            -ClientSecret $env:CLIENT_SECRET
